@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/router";
+import Loading from "@/components/core/Loading";
 
 export default function Project() {
   let [data, setData] = useState([]);
@@ -27,8 +28,8 @@ export default function Project() {
       };
       reader.readAsBinaryString(file);
     });
+    setData(docs);
     setLoading(false);
-    return setData(docs);
   }
 
   async function ingestData() {
@@ -63,6 +64,7 @@ export default function Project() {
       <div className="col-span-3 px-10">
         <FolderDragnDrop onDrop={onDrop} />
       </div>
+      {!data && loading && <Loading />}
       <div className="col-span-1 px-10">
         <input
           type="text"
@@ -77,12 +79,7 @@ export default function Project() {
         >
           Train
         </div>
-        {loading && (
-          <svg
-            class="animate-spin h-5 w-5 mr-3 bg-purple-800"
-            viewBox="0 0 24 24"
-          ></svg>
-        )}
+        {loading && <Loading />}
       </div>
     </div>
   );

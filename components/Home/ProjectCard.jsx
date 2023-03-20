@@ -15,8 +15,8 @@ const ProjectCard = ({ name, namespace, id }) => {
 
   return (
     <div className="relative group mb-5">
-      <div className="absolute inset-0 group-hover:opacity-100 opacity-80 duration-200 bg-gradient-to-r from-gray-600 to-gray-700 rounded-md blur-lg"></div>
-      <div className="relative bg-white text-black rounded-md flex">
+      <div className="absolute inset-0 group-hover:opacity-100 opacity-80 duration-200  rounded-md blur-lg"></div>
+      <div className="relative bg-black text-white rounded-md flex border">
         <div className="w-full flex items-center justify-between p-5">
           <Link href={`/projects/${id}`}>
             <p className="text-2xl hover:text-blue-500 cursor-pointer duration-200">

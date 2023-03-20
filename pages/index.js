@@ -1,3 +1,4 @@
+import Loading from "@/components/core/Loading";
 import ProjectCard from "@/components/Home/ProjectCard";
 import StartCard from "@/components/Home/StartCard";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
@@ -13,6 +14,7 @@ export default function Home() {
       setLoading(true);
       const res = await fetch("/api/getInstances");
       const data = await res.json();
+      console.log(data);
       setData(data);
       setLoading(false);
     }
@@ -34,15 +36,11 @@ export default function Home() {
       <div className="grid grid-cols-2 w-[90vw] p-10">
         <StartCard />
       </div>
+      {loading && <Loading />}
       {data.length !== 0 && (
         <div className="w-[90%] p-10">
           <p className="text-4xl font-bold mb-5">Your Projects</p>
-          {loading && (
-            <svg
-              class="animate-spin h-5 w-5 mr-3 bg-purple-800"
-              viewBox="0 0 24 24"
-            ></svg>
-          )}
+
           {data.map((project, index) => (
             <ProjectCard
               key={index}

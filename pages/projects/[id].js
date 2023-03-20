@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Docs from "@/components/Project/Docs";
+import Loading from "@/components/core/Loading";
 
 const App = () => {
   const [data, setData] = useState(null);
@@ -55,16 +56,16 @@ const App = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center">
-      {!data && loading && (
-        <svg
-          className="animate-spin h-5 w-5 mr-3 bg-purple-800"
-          viewBox="0 0 24 24"
-        ></svg>
-      )}
+      {!data && loading && <Loading txt={"Loading your project"} />}
       {data && <InfoCard data={data} />}
       <div className="w-[90vw] flex relative">
         <div className="flex w-1/2 items-center top-0 left-3 absolute justify-center">
           <div className="w-[90%] flex flex-col mt-5">
+            <p className="text-xl font-bold">See a demo</p>
+            <p className="text-sm text-white/50">
+              Ask question about the files you had provided and see if the ai
+              can answer those
+            </p>
             <form onSubmit={qahandler} className="flex w-full">
               <input
                 placeholder="Ask Question"
@@ -83,14 +84,7 @@ const App = () => {
 
             {/* answer */}
             <div className="w-full bg-white mt-5 rounded-md">
-              {loading && data && (
-                <div className="p-3 flex items-center justify-center">
-                  <svg
-                    className="animate-spin h-5 w-5 mr-3 bg-purple-800"
-                    viewBox="0 0 24 24"
-                  ></svg>
-                </div>
-              )}
+              {loading && data && <Loading />}
               {answer && (
                 <div className="prose p-3 text-black">
                   <ReactMarkdown className="text-black">{answer}</ReactMarkdown>
