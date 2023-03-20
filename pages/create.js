@@ -2,11 +2,13 @@ import FolderDragnDrop from "@/components/Project/FolderDragnDrop";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { useRouter } from "next/router";
 
 export default function Project() {
   let [data, setData] = useState([]);
   let [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
+  const router = useRouter();
 
   useEffect(() => {
     console.log(loading);
@@ -52,7 +54,8 @@ export default function Project() {
 
     const response = await res.json();
     setLoading(false);
-    console.log("data", response);
+    toast.success("Model trained");
+    router.push(`/projects/${response?.id}`);
   }
 
   return (
@@ -74,7 +77,12 @@ export default function Project() {
         >
           Train
         </div>
-        {loading && <p>Loading</p>}
+        {loading && (
+          <svg
+            class="animate-spin h-5 w-5 mr-3 bg-purple-800"
+            viewBox="0 0 24 24"
+          ></svg>
+        )}
       </div>
     </div>
   );

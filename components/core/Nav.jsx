@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MobileNav, IconButton } from "@material-tailwind/react";
+import { MobileNav, IconButton, Avatar } from "@material-tailwind/react";
 import Link from "next/link";
 
 export default function Nav() {
@@ -15,11 +15,14 @@ export default function Nav() {
   return (
     <div className="mx-auto w-full p-3 border-b border-b-blue-gray-900">
       <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-        <Link href="/">
-          <p className="mr-4 cursor-pointer py-1.5 text-2xl text-white font-bold">
-            Dok<span className="text-purple-800">Hero</span>
-          </p>
-        </Link>
+        <div className="flex items-center justify-center">
+          <Avatar src="/logo.png" alt="avatar" variant="circular" />
+          <Link href="/">
+            <p className="ml-4 cursor-pointer py-1.5 text-2xl text-white font-bold">
+              Dok<span className="text-purple-800">Hero</span>
+            </p>
+          </Link>
+        </div>
         <div className="md:flex items-center justify-center text-white font-medium hidden ">
           <Link href={"/create"}>
             <p className="mr-3">Create</p>

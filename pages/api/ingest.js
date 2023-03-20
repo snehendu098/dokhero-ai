@@ -31,7 +31,7 @@ async function createInquiry(req, res, userId) {
         namespace,
       },
     });
-    return res.status(200).json(newEntry, { success: true });
+    return newEntry;
   } catch (error) {
     console.error("Request error", error);
     res.status(500).json({ error: "Error creating question", success: false });
@@ -67,10 +67,9 @@ async function handler(req, res) {
       textKey: "text",
     });
 
-    await createInquiry(req, res, user.sub);
-
     console.log("vector store created");
-    res.status(200).json({ message: "Data ingestion completed successfully" });
+    const m = await createInquiry(req, res, user.sub);
+    return res.status(200).json(m, { msg: "data ingestion done" });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ message: "Failed to ingest your data" });

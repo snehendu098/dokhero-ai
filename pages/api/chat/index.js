@@ -5,8 +5,9 @@ import { openai } from "@/utils/openai-client";
 import { pinecone } from "@/utils/pinecone-client";
 import { PINECONE_INDEX_NAME } from "@/config/pinecone";
 
-async function handler(req, res) {
-  const { question, namespace } = req.body;
+export default async function handler(req, res) {
+  const { question } = req.body;
+  const namespace = req.headers["namespace"];
 
   if (!question) {
     return res.status(400).json({ message: "No question in the request" });
@@ -19,28 +20,22 @@ async function handler(req, res) {
     const index = pinecone.Index(PINECONE_INDEX_NAME);
     /* create vectorstore*/
     const vectorStore = await PineconeStore.fromExistingIndex(
-      index,
       new OpenAIEmbeddings({}),
-      "text",
-      namespace //optional
+      { pineconeIndex: index, namespace: namespace, textKey: "text" }
     );
 
     const model = openai;
     // create the chain
-    const chain = VectorDBQAChain.fromLLM(model, vectorStore);
-
-    //Ask a question
-    const response = await chain.call({
-      query: sanitizedQuestion,
+    const chain = VectorDBQAChain.fromLLM(model, vectorStore, {
+      returnSourceDocuments: false,
     });
 
-    console.log("response", response);
+    //Ask a question
+    const response = await chain.call({ query: sanitizedQuestion });
 
-    res.status(200).json(response);
+    res.status(200).json({ data: response });
   } catch (error) {
     console.log("error", error);
-    res.status(500).json({ error: error?.message || "Unknown error." });
+    res.status(500).json({ error: error || "Unknown error." });
   }
 }
-
-export default handler;
